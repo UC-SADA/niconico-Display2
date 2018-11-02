@@ -1,0 +1,9 @@
+{
+  "name": "niconico-glass",
+  "version": "0.0.2",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^1.7.0"
+  }
+}
