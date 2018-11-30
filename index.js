@@ -70,7 +70,6 @@ var good = 0
 var bad =0
 var question =0
 var setsubun =0
-
 const getDirName = path.dirname
 
 function writeFile (path, contents, cb) {
@@ -80,26 +79,19 @@ function writeFile (path, contents, cb) {
   })
 }
 
-writeFile("./Log/good.txt", good, function(err){
-  if(err){}
-});
-writeFile("./Log/bad.txt", bad, function(err){
-  if(err){}
-});
-writeFile("./Log/question.txt", question, function(err){
-  if(err){}
-});
-writeFile("./Log/setsubun.txt", setsubun, function(err){
-  if(err){}
-});
+
 //ファイルの追記関数
-function appendFile(path, data) {
-  fs.appendFile(path, data, function (err) {
-    if (err) {
-        throw err;
-    }
-  });
+function appendFile(path, data, cb) {
+  mkdirp(getDirName(path), function (err) {
+    if (err) return cb(err)
+    fs.appendFile(path, data, function (err) {
+      if (err) {
+          throw err;
+      }
+    });
+  })
 }
+
 
 var mainWindow = null;
 var mainWindow2 = null;
@@ -192,9 +184,6 @@ app.get('/like', function (req, res) {
     good++;
     console.log("Good : " + good);
     appendFile("./Log/"+dt.toFormat("YYYYMMDD")+"like.txt",dt.toFormat("YYYY年MM月DD日HH24時MI分SS秒") + "/IP:" + getIP(req) + "/Good:" + good + "\n");
-    writeFile("./Log/good.txt", good, function(err){
-      if(err){}
-    });
 }
 else
 {
@@ -203,9 +192,6 @@ else
         bad++
         console.log("Bad : " + bad);
         appendFile("./Log/"+dt.toFormat("YYYYMMDD")+"like.txt",dt.toFormat("YYYY年MM月DD日HH24時MI分SS秒") + "/IP:" + getIP(req) + "/Bad:" + bad + "\n");
-        writeFile("./Log/bad.txt", bad, function(err){
-          if(err){}
-        });
     }
     else
 {
@@ -214,18 +200,12 @@ else
       question++
       console.log("Question : " + question);
       appendFile("./Log/"+dt.toFormat("YYYYMMDD")+"like.txt",dt.toFormat("YYYY年MM月DD日HH24時MI分SS秒") + "/IP:" + getIP(req) + "/Question:" + question + "\n");
-      writeFile("./Log/question.txt", question, function(err){
-        if(err){}
-      });
   }
   else
 {
       setsubun ++
       console.log("Setsubun : " + setsubun);
       appendFile("./Log/"+dt.toFormat("YYYYMMDD")+"like.txt",dt.toFormat("YYYY年MM月DD日HH24時MI分SS秒") + "/IP:" + getIP(req) + "/Setsubun:" + setsubun + "\n");
-      writeFile("./Log/setsubun.txt", setsubun, function(err){
-        if(err){}
-      });
   }
 
 }
